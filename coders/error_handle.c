@@ -6,40 +6,39 @@
 /*   By: tokyrand <tokyrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/24 14:32:21 by tokyrand          #+#    #+#             */
-/*   Updated: 2026/08/25 07:04:55 by tokyrand         ###   ########.fr       */
+/*   Updated: 2026/08/30 20:57:21 by tokyrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-
-void	handle_msg(t_data *self)
+void	handle_msg(t_arg *self)
 {
-	int	num;
+	int	i;
 
-	num = 1;
+	i = 1;
 	if (is_neg(self->n_coders))
-		handle_n_coders(&num);
+		handle_n_coders(&i);
 	if (is_neg(self->tto_bout))
-		handle_tto_burnout(&num);
+		handle_tto_burnout(&i);
 	if (is_neg(self->tto_comp))
-		handle_tto_comp(&num);
+		handle_tto_comp(&i);
 	if (is_neg(self->tto_deg))
-		handle_tto_deg(&num);
+		handle_tto_deg(&i);
 	if (is_neg(self->tto_refr))
-		handle_tto_refr(&num);
+		handle_tto_refr(&i);
 	if (is_neg(self->no_compreq))
-		handle_no_compreq(&num);
+		handle_no_compreq(&i);
 	if (is_neg(self->dong_cooldown))
-		handle_dong_cooldown(&num);
-	if (ft_strcmp(self->sched, "fifo") != 0
-		&& ft_strcmp(self->sched, "edf") != 0)
-		handle_sched(&num);
+		handle_dong_cooldown(&i);
+	if (strcmp(self->sched, "fifo") != 0
+		&& strcmp(self->sched, "edf") != 0)
+		handle_sched(&i);
 }
 
 void	handle_tto_refr(int *num)
 {
 	printf("%s[ERROR-%d]%s: Time to refractor "
-		"%scan't be negative%s\n", get_color("red"), *num,
+		"%scan't be negative or 0%s\n", get_color("red"), *num,
 		get_color("reset"), get_color("blue"),
 		get_color("reset"));
 	(*num)++;
@@ -48,7 +47,7 @@ void	handle_tto_refr(int *num)
 void	handle_no_compreq(int *num)
 {
 	printf("%s[ERROR-%d]%s: Number of compiles required "
-		"%scan't be negative%s\n",
+		"%scan't be negative or 0%s\n",
 		get_color("red"), *num,
 		get_color("reset"), get_color("blue"),
 		get_color("reset"));
@@ -58,7 +57,7 @@ void	handle_no_compreq(int *num)
 void	handle_dong_cooldown(int *num)
 {
 	printf("%s[ERROR-%d]%s: Dongle cooldown "
-		"%scan't be negative%s\n",
+		"%scan't be negative or 0%s\n",
 		get_color("red"), *num,
 		get_color("reset"), get_color("blue"),
 		get_color("reset"));

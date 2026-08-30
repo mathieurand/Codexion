@@ -6,7 +6,7 @@
 /*   By: tokyrand <tokyrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/24 12:49:21 by tokyrand          #+#    #+#             */
-/*   Updated: 2026/08/24 15:13:46 by tokyrand         ###   ########.fr       */
+/*   Updated: 2026/08/29 00:59:00 by tokyrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ const char	*get_color(const char *color_name)
 	i = 0;
 	while (color[i].name != NULL)
 	{
-		if (ft_strcmp(color[i].name, color_name) == 0)
+		if (strcmp(color[i].name, color_name) == 0)
 			return (color[i].color);
 		i++;
 	}
