@@ -6,7 +6,7 @@
 /*   By: tokyrand <tokyrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/05 21:44:18 by tokyrand          #+#    #+#             */
-/*   Updated: 2026/09/06 06:34:02 by tokyrand         ###   ########.fr       */
+/*   Updated: 2026/09/06 06:35:05 by tokyrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ bool parser(char **av)
 			j, error->msg[i - 1], atoi(av[i]));		
 		an_error = false;	
 	}
-	
 	free(error->msg);
 	free(error);
 	return (an_error);
