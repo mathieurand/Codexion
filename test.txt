@@ -1,0 +1,111 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   test.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tokyrand <tokyrand@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/05 11:27:02 by tokyrand          #+#    #+#             */
+/*   Updated: 2026/09/05 17:37:11 by tokyrand         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <pthread.h>
+#include "codexion.h"
+
+// typedef	struct s_coder	t_coder;
+// typedef struct s_heap	t_heap;
+
+// struct s_coder
+// {
+// 	int		id;
+// };
+
+
+// struct s_heap
+// {
+// 	t_coder		*coder;
+// 	int			size;
+// 	int			capacity;
+// };
+
+// void	*routine1(void *arg)
+// {
+// 	(void)arg;
+// 	printf("hello i'm thread 1\n");
+// 	return (NULL);
+// }
+
+void	*routine1(void *arg)
+{
+	t_coder	*coder;
+
+	coder = (void *)arg;
+	printf("hi i'm thread %d\n", coder->id);
+	return (NULL);
+}
+
+int main()
+{
+	t_dongle	*dongle;
+	dongle = malloc(sizeof(int) * 4);
+	t_coder		*coder;
+	coder = malloc(sizeof(t_coder) * 4);
+	int	i, j, k;
+
+	i = 0;
+	j = 0;
+	while (i < 4)
+	{
+		coder[i].id = j;
+		dongle[i].id = j;
+		coder[i].next = NULL;
+		coder[i].prev = NULL;
+		i++;
+		j++;
+	}
+	i = 0;
+	while (i < 4)
+	{
+		if (i != 3)
+			j = i + 1;
+		else
+			j = 0;
+		if (i != 0)
+			k = i - 1;
+		else
+			k = 3;
+		coder[i].prev = &coder[k];
+		coder[i].next = &coder[j];
+		coder[i].left_dongle = &dongle[k];
+		coder[i].right_dongle = &dongle[j];
+		printf("---------------------------------");
+		printf("\n|coder [%d]\t\t\t|\n|"
+			"next -> [%d]\t\t\t|\n"
+			"|prev -> [%d]\t\t\t|\n"
+			"|dlft -> [%d]\t\t\t|\n"
+			"|drgt -> [%d]\t\t\t|\n",
+			coder[i].id,
+			coder[i].next->id,
+			coder[i].prev->id,
+			coder[i].left_dongle->id,
+			coder[i].right_dongle->id);
+		printf("---------------------------------\n");
+		i++;
+	}
+	i = 0;
+	while (i < 4)
+	{
+		pthread_create(&coder[i].coders_threads, NULL, routine1, &coder[i]);
+		i++;
+	}
+	i = 0;
+	while (i < 4)
+	{
+		pthread_join(coder[i].coders_threads, NULL);
+		i++;
+	}
+	return (0);
+}
