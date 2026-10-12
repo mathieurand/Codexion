@@ -6,7 +6,7 @@
 /*   By: tokyrand <tokyrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/20 06:19:24 by tokyrand          #+#    #+#             */
-/*   Updated: 2026/09/21 13:01:11 by tokyrand         ###   ########.fr       */
+/*   Updated: 2026/09/25 10:17:56 by tokyrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,12 @@ int	launch_pthread(t_data *data)
 
 	coder = data->coder;
 	nb = (int)data->nb_coders;
-	data->running = 0;
 	i = 0;
 	while (i < nb)
 	{
 		if (pthread_create(&coder[i].thread, NULL, coder_routine, &coder[i]))
 			return (1);
 		i++;
-		data->running++;
 	}
 	return (0);
 }

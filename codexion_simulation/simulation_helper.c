@@ -6,7 +6,7 @@
 /*   By: tokyrand <tokyrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 07:02:21 by tokyrand          #+#    #+#             */
-/*   Updated: 2026/09/21 12:44:49 by tokyrand         ###   ########.fr       */
+/*   Updated: 2026/10/12 10:09:04 by tokyrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	compile(t_coder *coder)
 
 void	debug(t_coder *coder)
 {
-	if (should_stop(coder->data))
+	if (should_stop(coder->data) && get_time_ms() - coder->last_compile_start > coder->data->time_to_burnout)
 		return ;
 	log_message(coder->data, coder->id, "is debugging");
 	usleep(coder->data->time_to_debug * 1000);
@@ -57,7 +57,7 @@ void	debug(t_coder *coder)
 
 void	refactor(t_coder *coder)
 {
-	if (should_stop(coder->data))
+	if (should_stop(coder->data) && get_time_ms() - coder->last_compile_start > coder->data->time_to_burnout)
 		return ;
 	log_message(coder->data, coder->id, "is refactoring");
 	usleep(coder->data->time_to_refactor * 1000);
@@ -68,6 +68,7 @@ void	*coder_routine(void *arg)
 	t_coder	*coder;
 
 	coder = (t_coder *)arg;
+	wait_for_start(coder->data);
 	while (coder->compiles_done < coder->data->compiles_required)
 	{
 		if (should_stop(coder->data))

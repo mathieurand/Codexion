@@ -6,7 +6,7 @@
 /*   By: tokyrand <tokyrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/19 16:02:12 by tokyrand          #+#    #+#             */
-/*   Updated: 2026/09/21 13:00:33 by tokyrand         ###   ########.fr       */
+/*   Updated: 2026/09/25 10:26:00 by tokyrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,19 @@ struct s_data
 	long			start_time;
 	int				stop;
 	long			timestamp;
-	long			running;
 	t_coder			*coder;
 	t_dongle		*dongle;
 	pthread_mutex_t	general_mutex;
 	pthread_mutex_t	dongle_mutex;
 	pthread_cond_t	cond;
 	long			request_counter;
+	int				threads_ready;
+	int				start_signal;
+	pthread_cond_t	bar_cond;
+	pthread_mutex_t	bar_mutex;
 };
 
+void	wait_for_start(t_data *data);
 long	compute_key(t_coder *coder);
 void	register_waiter(t_dongle *dongle, int coder_id, long key);
 void	unregister_waiter(t_dongle *dongle, int coder_id);

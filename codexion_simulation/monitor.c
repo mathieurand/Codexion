@@ -6,7 +6,7 @@
 /*   By: tokyrand <tokyrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 03:12:53 by tokyrand          #+#    #+#             */
-/*   Updated: 2026/09/21 07:43:37 by tokyrand         ###   ########.fr       */
+/*   Updated: 2026/10/12 10:14:03 by tokyrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	check_burnout(t_data *data)
 		start = data->coder[i].last_compile_start;
 		pthread_mutex_unlock(&data->general_mutex);
 		now = get_elapsed_ms(data);
-		if (now - start > data->time_to_burnout
+		if (now - start >= data->time_to_burnout
 			&& data->coder[i].compiles_done < data->compiles_required)
 		{
 			log_message(data, data->coder[i].id, "burned out");

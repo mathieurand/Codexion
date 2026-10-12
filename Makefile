@@ -7,6 +7,7 @@ SRCS = codexion_simulation/cleanup.c \
 	   codexion_simulation/simulation.c \
 	   codexion_simulation/simulation_helper.c \
 	   codexion_simulation/simulation_helper_2.c \
+	   codexion_simulation/simulation_helper_3.c \
 	   codexion_simulation/init_helpers.c \
 	   codexion_simulation/get_time_ms.c \
 	   codexion_simulation/log_message.c \

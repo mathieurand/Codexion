@@ -6,7 +6,7 @@
 /*   By: tokyrand <tokyrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/19 16:06:33 by tokyrand          #+#    #+#             */
-/*   Updated: 2026/09/21 06:58:58 by tokyrand         ###   ########.fr       */
+/*   Updated: 2026/10/12 09:36:05 by tokyrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,22 @@ static int	parsing(int ac, char **av)
 	return (0);
 }
 
-static void	init_helper(t_data *data, char **av)
+static int	init_helper(t_data *data, char **av)
 {
 	if (!strcmp(av[8], "fifo"))
 		data->scheduler = 1;
 	else if (!strcmp(av[8], "edf"))
 		data->scheduler = 0;
-	data->start_time = get_time_ms();
 	data->timestamp = 0;
 	data->request_counter = 0;
 	data->stop = 0;
+	data->threads_ready = 0;
+	data->start_signal = 0;
+	data->start_time = get_time_ms();
+	if (pthread_mutex_init(&data->bar_mutex, NULL)
+		|| pthread_cond_init(&data->bar_cond, NULL))
+		return (1);
+	return (0);
 }
 
 int	init_data(t_data *data, int ac, char **av)
@@ -99,10 +105,10 @@ int	init_data(t_data *data, int ac, char **av)
 		return (1);
 	if (ft_atoi_safe(av[7], &data->dongle_cooldown))
 		return (1);
-	init_helper(data, av);
 	if (pthread_mutex_init(&data->general_mutex, NULL)
 		|| pthread_mutex_init(&data->dongle_mutex, NULL)
-		|| pthread_cond_init(&data->cond, NULL))
+		|| pthread_cond_init(&data->cond, NULL)
+		|| init_helper(data, av))
 		return (1);
 	return (0);
 }
