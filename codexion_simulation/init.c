@@ -6,7 +6,7 @@
 /*   By: tokyrand <tokyrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/19 16:06:33 by tokyrand          #+#    #+#             */
-/*   Updated: 2026/10/12 09:36:05 by tokyrand         ###   ########.fr       */
+/*   Updated: 2026/10/19 08:36:09 by tokyrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	is_number(char *av)
 	i = 0;
 	if (!av || av[0] == '\0')
 		return (1);
-	if (av[i] == '-' || av[i] == '+')
+	if ((av[i] == '-' || av[i] == '+') && strlen(av) >= 2)
 		i++;
 	while (av[i])
 	{
@@ -46,6 +46,10 @@ static int	has_forbiden_zero(char **av)
 		}
 		i++;
 	}
+	if (value[1] == 0)
+		return (1);
+	if (value[6] == 0)
+		printf("compilation limit reached!\n");
 	return (0);
 }
 
@@ -64,7 +68,8 @@ static int	parsing(int ac, char **av)
 	}
 	if (has_forbiden_zero(av))
 		return (1);
-	if (strcmp(av[8], "fifo") != 0 && strcmp(av[8], "edf") != 0)
+	if (strcmp(av[8], "fifo") != 0
+		&& strcmp(av[8], "edf") != 0)
 		return (1);
 	return (0);
 }

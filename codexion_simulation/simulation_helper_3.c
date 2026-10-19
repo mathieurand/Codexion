@@ -6,7 +6,7 @@
 /*   By: tokyrand <tokyrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 13:09:32 by tokyrand          #+#    #+#             */
-/*   Updated: 2026/10/12 09:35:40 by tokyrand         ###   ########.fr       */
+/*   Updated: 2026/10/19 08:36:15 by tokyrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,14 @@ void	wait_for_start(t_data *data)
 			pthread_cond_wait(&data->bar_cond, &data->bar_mutex);
 	}
 	pthread_mutex_unlock(&data->bar_mutex);
+}
+
+int	waiter_is_blocked(t_data *data, int waiter_id, t_dongle *shared)
+{
+	t_coder	*w;
+
+	w = &data->coder[waiter_id - 1];
+	if (w->left == shared)
+		return (w->right->state);
+	return (w->left->state);
 }

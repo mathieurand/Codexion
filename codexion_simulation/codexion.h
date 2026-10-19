@@ -6,7 +6,7 @@
 /*   By: tokyrand <tokyrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/19 16:02:12 by tokyrand          #+#    #+#             */
-/*   Updated: 2026/09/25 10:26:00 by tokyrand         ###   ########.fr       */
+/*   Updated: 2026/10/19 08:26:11 by tokyrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,15 @@ struct s_data
 	pthread_mutex_t	bar_mutex;
 };
 
+void	log_error(void);
 void	wait_for_start(t_data *data);
 long	compute_key(t_coder *coder);
 void	register_waiter(t_dongle *dongle, int coder_id, long key);
 void	unregister_waiter(t_dongle *dongle, int coder_id);
-int		is_top_priority(t_dongle *dongle, int coder_id, long my_key);
+int		is_top_priority(t_dongle *dongle, t_coder *coder, long my_key);
+int		waiter_is_blocked(t_data *data, int waiter_id, t_dongle *shared);
 void	wait_until_ready(t_coder *coder);
-int		dongle_ready(t_dongle *dongle, long cooldown, int coder_id, long key);
+int		dongle_unavailable(t_dongle *dongle, long cooldown, t_coder *coder, long key);
 void	take_dongle(t_coder *coder);
 int		should_stop(t_data *data);
 void	refactor(t_coder *coder);

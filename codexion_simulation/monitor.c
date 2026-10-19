@@ -6,7 +6,7 @@
 /*   By: tokyrand <tokyrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 03:12:53 by tokyrand          #+#    #+#             */
-/*   Updated: 2026/10/12 10:14:03 by tokyrand         ###   ########.fr       */
+/*   Updated: 2026/10/13 22:47:08 by tokyrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,23 @@ static int	check_burnout(t_data *data)
 {
 	int		i;
 	long	now;
-	long	start;
+	t_coder	*coder;
 
 	i = 0;
 	while (i < data->nb_coders)
 	{
-		pthread_mutex_lock(&data->general_mutex);
-		start = data->coder[i].last_compile_start;
-		pthread_mutex_unlock(&data->general_mutex);
+		coder = &data->coder[i];
 		now = get_elapsed_ms(data);
-		if (now - start >= data->time_to_burnout
-			&& data->coder[i].compiles_done < data->compiles_required)
+		pthread_mutex_lock(&data->general_mutex);
+		if (now - coder->last_compile_start >= data->time_to_burnout
+			&& coder->compiles_done < data->compiles_required)
 		{
-			log_message(data, data->coder[i].id, "burned out");
+			printf("%ld %d burned out\n", now, coder->id);
+			data->stop = 1;
+			pthread_mutex_unlock(&data->general_mutex);
 			return (1);
 		}
+		pthread_mutex_unlock(&data->general_mutex);
 		i++;
 	}
 	return (0);
@@ -83,7 +85,6 @@ void	*monitor_routine(void *arg)
 	{
 		if (check_burnout(data))
 		{
-			set_stop(data);
 			pthread_mutex_lock(&data->dongle_mutex);
 			pthread_cond_broadcast(&data->cond);
 			pthread_mutex_unlock(&data->dongle_mutex);
